@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "AuthApp",
-    "slug": "AuthApp",
+    "slug": "authantication-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -20,6 +20,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6ff304c3-4684-4946-8838-fe0ac6fd2199"
+      }
+    },
+    "owner": "z-kon"
   }
 }
