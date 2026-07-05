@@ -15,9 +15,9 @@ const APP_ID : string=Config.APP_ID!;
 
 //Signup User Type
 type SignupUser={
-    name:string,
     email:string,
-    password:string
+    password:string,
+    name:string
 }
 
 
@@ -34,8 +34,8 @@ class AppwriteService{
 
     constructor(){
         appClient
-        .setEndpoint(APP_ENDPOINT )
-        .setProject(APP_ID ) 
+        .setEndpoint(APP_ENDPOINT)
+        .setProject(APP_ID) 
 
 
 
@@ -45,14 +45,21 @@ class AppwriteService{
 
 
     //Create New Account
-    async SignupAcc({name,email,password}:SignupUser){
+    async SignupAcc({email, password, name}:SignupUser){
         try {
-            await this.account.create(
-                ID.unique(),
-                name,
+            const userAcc=await this.account.create(
+                {
+                userId:ID.unique(),
                 email,
-                password
+                password,
+                name
+                }
             )
+            if(userAcc){
+                return this.loginAcc({email, password});
+            }else{
+                return userAcc
+            }
         } catch (error) {
             Snackbar.show({
                 text:"Please Try again in a while!",
@@ -63,7 +70,7 @@ class AppwriteService{
     }
     async loginAcc({email,password}:loginUser){
         try {
-            await this.account.createEmailPasswordSession(email,password)
+            return await this.account.createEmailPasswordSession(email,password)
         } catch (error) {
             Snackbar.show({
                 text:"Please Try again in a while!",
@@ -76,7 +83,7 @@ class AppwriteService{
 
     async getCurrentAcc(){
          try {
-            await this.account.get()
+            return await this.account.get()
         } catch (error) {
             console.log("getCurrentAcc::Error= ",error)
         }
@@ -85,12 +92,12 @@ class AppwriteService{
 
     async logoutAcc(){
          try {
-            await this.account.deleteSession('current')
-        } catch (error) {
-            Snackbar.show({
+            return await this.account.deleteSession('current')
+             Snackbar.show({
                 text:"Account Logged Out Successfully!",
                 duration:Snackbar.LENGTH_SHORT
             })
+        } catch (error) {
             console.log("logoutAcc::Error= ",error)
         }
     }

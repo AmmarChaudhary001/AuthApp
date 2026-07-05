@@ -24,7 +24,7 @@ export type userObj = {
 
 export default function Home() {
 
-    const [userData, setUserData]=useState()
+    const [userData, setUserData]=useState<userObj>()
     const {appwrite, setIsLoggedIn}=useContext(AuthAppContext)
 
     const manageLogout=()=>{
@@ -47,8 +47,8 @@ export default function Home() {
                 name:response.name,
                 email:response.email
             }
+            setUserData(user)
         }
-        setUserData(user)
       })
     }, [appwrite])
     
